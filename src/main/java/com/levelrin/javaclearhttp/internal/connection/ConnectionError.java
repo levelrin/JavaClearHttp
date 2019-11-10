@@ -37,8 +37,8 @@ public final class ConnectionError {
 
     /**
      * Primary constructor.
-     * @param map Info at {@link this#map}.
-     * @param messages Info at {@link this#messages}.
+     * @param map Info at {@link ConnectionError#map}.
+     * @param messages Info at {@link ConnectionError#messages}.
      */
     public ConnectionError(final TraceableMap map, final List<String> messages) {
         this.map = map;

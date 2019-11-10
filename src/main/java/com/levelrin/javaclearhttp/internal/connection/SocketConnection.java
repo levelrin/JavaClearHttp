@@ -30,13 +30,13 @@ public final class SocketConnection implements ConnectionType {
 
     /**
      * It's responsible for making HTTPS connection.
-     * This will be used when the protocol is HTTPS in the {@link this#map}.
+     * This will be used when the protocol is HTTPS in the {@link SocketConnection#map}.
      */
     private final ConnectionType httpsSocket;
 
     /**
      * Secondary constructor.
-     * @param map Info at {@link this#map}.
+     * @param map Info at {@link SocketConnection#map}.
      */
     public SocketConnection(final TraceableMap map) {
         this(map, new HttpSocket(map), new HttpsSocket(map));
@@ -44,9 +44,9 @@ public final class SocketConnection implements ConnectionType {
 
     /**
      * Primary constructor.
-     * @param map Info at {@link this#map}.
-     * @param httpSocket Info at {@link this#httpSocket}.
-     * @param httpsSocket Info at {@link this#httpsSocket}.
+     * @param map Info at {@link SocketConnection#map}.
+     * @param httpSocket Info at {@link SocketConnection#httpSocket}.
+     * @param httpsSocket Info at {@link SocketConnection#httpsSocket}.
      */
     public SocketConnection(final TraceableMap map, final ConnectionType httpSocket, final ConnectionType httpsSocket) {
         this.map = map;

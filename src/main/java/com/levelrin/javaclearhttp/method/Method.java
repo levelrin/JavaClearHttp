@@ -41,7 +41,7 @@ public final class Method implements MethodType {
     /**
      * Secondary constructor.
      * This object will use {@link SocketConnection}.
-     * @param map Info at {@link this#map}.
+     * @param map Info at {@link Method#map}.
      */
     public Method(final TraceableMap map) {
         this(map, new SocketConnection(map));
@@ -50,8 +50,8 @@ public final class Method implements MethodType {
     /**
      * Primary constructor.
      * Usually, it's for testing.
-     * @param map Info at {@link this#map}.
-     * @param connection Info at {@link this#connection}.
+     * @param map Info at {@link Method#map}.
+     * @param connection Info at {@link Method#connection}.
      */
     public Method(final TraceableMap map, final ConnectionType connection) {
         this.map = map;

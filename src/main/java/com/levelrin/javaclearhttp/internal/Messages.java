@@ -42,7 +42,7 @@ public final class Messages {
     /**
      * Secondary constructor.
      * It can be used when default headers are enough for a HTTP request.
-     * @param map Info at {@link this#map}.
+     * @param map Info at {@link Messages#map}.
      */
     public Messages(final TraceableMap map) {
         this(map, new HashMap<>());
@@ -50,8 +50,8 @@ public final class Messages {
 
     /**
      * Primary constructor.
-     * @param map Info at {@link this#map}.
-     * @param headers Info at {@link this#headers}.
+     * @param map Info at {@link Messages#map}.
+     * @param headers Info at {@link Messages#headers}.
      */
     public Messages(final TraceableMap map, final Map<String, String> headers) {
         this.map = map;

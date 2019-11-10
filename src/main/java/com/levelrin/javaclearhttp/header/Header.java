@@ -48,8 +48,8 @@ public final class Header implements HeaderType {
     /**
      * Secondary constructor.
      * This object will use {@link SocketConnection}.
-     * @param map Info at {@link this#map}.
-     * @param headers Info at {@link this#headers}.
+     * @param map Info at {@link Header#map}.
+     * @param headers Info at {@link Header#headers}.
      */
     public Header(final TraceableMap map, final Map<String, String> headers) {
         this(map, headers, new SocketConnection(map));
@@ -58,9 +58,9 @@ public final class Header implements HeaderType {
     /**
      * Primary constructor.
      * Usually, it's for testing.
-     * @param map Info at {@link this#map}.
-     * @param headers Info at {@link this#headers}.
-     * @param connection Info at {@link this#connection}.
+     * @param map Info at {@link Header#map}.
+     * @param headers Info at {@link Header#headers}.
+     * @param connection Info at {@link Header#connection}.
      */
     public Header(final TraceableMap map, final Map<String, String> headers, final ConnectionType connection) {
         this.map = map;

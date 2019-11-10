@@ -42,8 +42,8 @@ public final class Body implements BodyType {
     /**
      * Secondary constructor.
      * This object will use {@link SocketConnection}.
-     * @param map Info at {@link this#map}.
-     * @param headers Info at {@link this#headers}.
+     * @param map Info at {@link Body#map}.
+     * @param headers Info at {@link Body#headers}.
      */
     public Body(final TraceableMap map, final Map<String, String> headers) {
         this(map, headers, new SocketConnection(map));
@@ -52,9 +52,9 @@ public final class Body implements BodyType {
     /**
      * Primary constructor.
      * Usually, it's for testing.
-     * @param map Info at {@link this#map}.
-     * @param headers Info at {@link this#headers}.
-     * @param connection Info at {@link this#connection}.
+     * @param map Info at {@link Body#map}.
+     * @param headers Info at {@link Body#headers}.
+     * @param connection Info at {@link Body#connection}.
      */
     public Body(final TraceableMap map, final Map<String, String> headers, final ConnectionType connection) {
         this.map = map;

@@ -35,7 +35,7 @@ public final class HttpSocket implements ConnectionType {
 
     /**
      * Primary constructor.
-     * @param map Info at {@link this#map}.
+     * @param map Info at {@link HttpSocket#map}.
      */
     public HttpSocket(final TraceableMap map) {
         this.map = map;

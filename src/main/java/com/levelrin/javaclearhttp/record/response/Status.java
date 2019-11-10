@@ -20,7 +20,7 @@ public final class Status implements StatusType {
 
     /**
      * Primary constructor.
-     * @param statusLine Info at {@link this#statusLine}.
+     * @param statusLine Info at {@link Status#statusLine}.
      */
     public Status(final String statusLine) {
         this.statusLine = statusLine;

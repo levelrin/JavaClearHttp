@@ -19,7 +19,7 @@ import java.util.StringJoiner;
 
 /**
  * It's responsible for providing the request and response records.
- * The {@link this#toString()} method can be useful for viewing all information at once.
+ * The {@link Record#toString()} method can be useful for viewing all information at once.
  */
 public final class Record implements RecordType {
 
@@ -42,9 +42,9 @@ public final class Record implements RecordType {
 
     /**
      * Primary constructor.
-     * @param map Info at {@link this#map}.
-     * @param messages Info at {@link this#messages}.
-     * @param replies Info at {@link this#replies}.
+     * @param map Info at {@link Record#map}.
+     * @param messages Info at {@link Record#messages}.
+     * @param replies Info at {@link Record#replies}.
      */
     public Record(final TraceableMap map, final List<String> messages, final List<String> replies) {
         this.map = map;

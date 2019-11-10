@@ -41,7 +41,7 @@ public final class Http implements HttpType {
 
     /**
      * Primary constructor.
-     * @param url Info at {@link this#url}.
+     * @param url Info at {@link Http#url}.
      */
     public Http(final URL url) {
         this.url = url;

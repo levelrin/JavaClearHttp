@@ -38,7 +38,7 @@ public final class Headers {
 
     /**
      * Primary constructor.
-     * @param messages Info at {@link this#messages}.
+     * @param messages Info at {@link Headers#messages}.
      */
     public Headers(final List<String> messages) {
         this.messages = messages;
