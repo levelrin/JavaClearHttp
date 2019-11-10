@@ -8,11 +8,11 @@
 JavaClearHttp is yet another HTTP client in Java.
 Why reinventing the wheel? You may ask.
 As the name suggests, its purpose is to show the HTTP communication transparently.
-The clear communication may help you on various tasks such as API investigation or documentation.
-For example, you may want to write some tutorial on GitHub API.
+Clear communication may help you with various tasks such as API investigation or documentation.
+For example, you may want to write some tutorials on the GitHub API.
 It would be helpful to document what messages you exactly sent and what replies exactly the server gave you.
 Sure, you can do it with more powerful HTTP clients such as [Apache HttpClient](https://hc.apache.org/httpcomponents-client-ga/).
-However, we believe JavaClearHttp provides easier way to obtain the information about HTTP communication.
+However, we believe JavaClearHttp provides an easier way to obtain information about HTTP communication.
 
 ## Usages
 
