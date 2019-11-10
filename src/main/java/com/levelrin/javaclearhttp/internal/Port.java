@@ -20,7 +20,7 @@ public final class Port {
 
     /**
      * Primary constructor.
-     * @param protocol Info at {@link this#protocol}.
+     * @param protocol Info at {@link Port#protocol}.
      */
     public Port(final String protocol) {
         this.protocol = protocol;

@@ -32,8 +32,8 @@ public final class RequestRecord implements RequestRecordType {
 
     /**
      * Primary constructor.
-     * @param map Info at {@link this#map}.
-     * @param messages Info at {@link this#rawMessages}.
+     * @param map Info at {@link RequestRecord#map}.
+     * @param messages Info at {@link RequestRecord#rawMessages}.
      */
     public RequestRecord(final TraceableMap map, final List<String> messages) {
         this.map = map;

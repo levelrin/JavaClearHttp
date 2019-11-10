@@ -25,7 +25,7 @@ public final class ResponseRecord implements ResponseRecordType {
 
     /**
      * Primary constructor.
-     * @param replies Info at {@link this#rawReplies}.
+     * @param replies Info at {@link ResponseRecord#rawReplies}.
      */
     public ResponseRecord(final List<String> replies) {
         this.rawReplies = replies;
