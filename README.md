@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/levelrin/JavaClearHttp.svg?branch=master)](https://travis-ci.org/levelrin/JavaClearHttp)
 [![Test Coverage](https://img.shields.io/codecov/c/github/levelrin/JavaClearHttp.svg)](https://codecov.io/github/levelrin/JavaClearHttp?branch=master)
 [![Maven Central](https://img.shields.io/maven-central/v/com.levelrin/javaclearhttp.svg)](https://maven-badges.herokuapp.com/maven-central/com.levelrin/javaclearhttp)
+[![](https://tokei.rs/b1/github/levelrin/JavaClearHttp?category=code)](https://github.com/levelrin/JavaClearHttp)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/levelrin/JavaClearHttp/blob/master/LICENSE)
 
 # JavaClearHttp
