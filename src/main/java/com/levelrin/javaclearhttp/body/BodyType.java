@@ -7,11 +7,12 @@
 
 package com.levelrin.javaclearhttp.body;
 
+import com.levelrin.javaclearhttp.header.HeaderType;
 import com.levelrin.javaclearhttp.record.RecordType;
 
 /**
  * Represents HTTP body.
- * Usually, it comes after {@link com.levelrin.javaclearhttp.header.HeaderType}.
+ * Usually, it comes after {@link HeaderType}.
  */
 public interface BodyType {
 

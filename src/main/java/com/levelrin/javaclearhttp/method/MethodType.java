@@ -7,6 +7,7 @@
 
 package com.levelrin.javaclearhttp.method;
 
+import com.levelrin.javaclearhttp.body.BodyType;
 import com.levelrin.javaclearhttp.header.HeaderType;
 import com.levelrin.javaclearhttp.record.RecordType;
 import com.levelrin.javaclearhttp.http.HttpType;
@@ -24,6 +25,13 @@ public interface MethodType {
      * @return HTTP header.
      */
     HeaderType header(String name, String value);
+
+    /**
+     * Attach HTTP body.
+     * @param content Content of body.
+     * @return HTTP body.
+     */
+    BodyType body(String content);
 
     /**
      * Send HTTP request.

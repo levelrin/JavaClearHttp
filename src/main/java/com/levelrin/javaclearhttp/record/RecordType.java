@@ -7,8 +7,8 @@
 
 package com.levelrin.javaclearhttp.record;
 
-import com.levelrin.javaclearhttp.record.request.RequestRecordType;
-import com.levelrin.javaclearhttp.record.response.ResponseRecordType;
+import com.levelrin.javaclearhttp.record.request.ReqRecordType;
+import com.levelrin.javaclearhttp.record.response.ResRecordType;
 
 /**
  * Represents the result of HTTP request.
@@ -19,12 +19,12 @@ public interface RecordType {
      * The information of HTTP request.
      * @return HTTP request record.
      */
-    RequestRecordType request();
+    ReqRecordType request();
 
     /**
      * The information of HTTP response.
      * @return HTTP response record.
      */
-    ResponseRecordType response();
+    ResRecordType response();
 
 }

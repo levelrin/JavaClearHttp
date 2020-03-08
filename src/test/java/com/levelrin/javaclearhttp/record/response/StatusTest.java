@@ -17,16 +17,16 @@ import org.junit.jupiter.api.Test;
 final class StatusTest {
 
     @Test
-    @SuppressWarnings("MagicNumber")
-    public void checkStatusCode() {
+    public void codeShouldComeFromStatusLine() {
+        final int expectedCode = 200;
         MatcherAssert.assertThat(
             new Status("HTTP/1.1 200 OK").code(),
-            CoreMatchers.equalTo(200)
+            CoreMatchers.equalTo(expectedCode)
         );
     }
 
     @Test
-    public void checkStatusReason() {
+    public void reasonShouldComeFromStatusLine() {
         MatcherAssert.assertThat(
             new Status("HTTP/1.1 201 Created").reason(),
             CoreMatchers.equalTo("Created")
@@ -34,10 +34,11 @@ final class StatusTest {
     }
 
     @Test
-    public void checkString() {
+    public void toStringShouldBeSameAsStatusLine() {
+        final String statusLine = "HTTP/1.1 400 Bad Request";
         MatcherAssert.assertThat(
-            new Status("HTTP/1.1 403 Forbidden").toString(),
-            CoreMatchers.equalTo("HTTP/1.1 403 Forbidden")
+            new Status(statusLine).toString(),
+            CoreMatchers.equalTo(statusLine)
         );
     }
 

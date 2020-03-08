@@ -7,8 +7,7 @@
 
 package com.levelrin.javaclearhttp.record.request;
 
-import com.levelrin.javaclearhttp.internal.Headers;
-import com.levelrin.javaclearhttp.internal.TraceableMap;
+import com.levelrin.javaclearhttp.info.ReqInfoType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,53 +15,43 @@ import java.util.Map;
 /**
  * The record of HTTP request.
  */
-public final class RequestRecord implements RequestRecordType {
+public final class RequestRecord implements ReqRecordType {
 
     /**
-     * A map that contains HTTP request configuration.
-     * It should have host, path, protocol, and method.
-     * Also, it may have body.
+     * Request information.
      */
-    private final TraceableMap map;
+    private final ReqInfoType info;
 
     /**
-     * A list that contains the messages sent to the server.
+     * Constructor.
+     * @param info See {@link RequestRecord#info}.
      */
-    private final List<String> rawMessages;
-
-    /**
-     * Primary constructor.
-     * @param map Info at {@link RequestRecord#map}.
-     * @param messages Info at {@link RequestRecord#rawMessages}.
-     */
-    public RequestRecord(final TraceableMap map, final List<String> messages) {
-        this.map = map;
-        this.rawMessages = messages;
+    public RequestRecord(final ReqInfoType info) {
+        this.info = info;
     }
 
     @Override
     public Map<String, String> headers() {
-        return new Headers(this.rawMessages).map();
+        return this.info.headers();
     }
 
     @Override
     public String body() {
-        return this.map.footprint(
-            this, "body()", "Obtain body from the request record."
-        ).value("body");
+        final List<String> copy = new ArrayList<>(this.info.messages());
+        return copy.get(copy.indexOf("") + 1);
     }
 
     @Override
     public List<String> messages() {
-        return new ArrayList<>(this.rawMessages);
+        return this.info.messages();
     }
 
     @Override
     public String toString() {
-        final List<String> copy = new ArrayList<>(this.rawMessages);
-        final StringBuilder info = new StringBuilder();
-        copy.forEach(message -> info.append(message).append('\n'));
-        return info.toString();
+        final List<String> copy = new ArrayList<>(this.info.messages());
+        final StringBuilder description = new StringBuilder();
+        copy.forEach(message -> description.append(message).append('\n'));
+        return description.toString();
     }
 
 }

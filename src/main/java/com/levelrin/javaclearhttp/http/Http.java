@@ -7,13 +7,15 @@
 
 package com.levelrin.javaclearhttp.http;
 
-import com.levelrin.javaclearhttp.internal.TraceableMap;
+import com.levelrin.javaclearhttp.connection.ConnectionType;
+import com.levelrin.javaclearhttp.connection.HttpSocket;
+import com.levelrin.javaclearhttp.connection.HttpsSocket;
+import com.levelrin.javaclearhttp.connection.SocketConnection;
+import com.levelrin.javaclearhttp.info.MethodInfo;
 import com.levelrin.javaclearhttp.method.Method;
 import com.levelrin.javaclearhttp.method.MethodType;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Locale;
-import java.util.StringJoiner;
 
 /**
  * Represents HTTP request.
@@ -22,118 +24,152 @@ import java.util.StringJoiner;
 public final class Http implements HttpType {
 
     /**
-     * The url of HTTP request.
+     * Request URL.
+     * Make sure to include the scheme.
      */
-    private final URL url;
+    private final String rawUrl;
+
+    /**
+     * An object that is responsible for making an actual HTTP connection.
+     */
+    private final ConnectionType connection;
 
     /**
      * Secondary constructor.
-     * @param url This will be used to instantiate {@link URL}.
-     * @throws IllegalArgumentException This can be thrown if the url is malformed.
+     * @param url See {@link Http#rawUrl}.
      */
     public Http(final String url) {
-        try {
-            this.url = new URL(url);
-        } catch (final MalformedURLException ex) {
-            throw new IllegalArgumentException("Invalid url: " + url, ex);
-        }
+        this(
+            url,
+            new SocketConnection(
+                new HttpSocket(),
+                new HttpsSocket()
+            )
+        );
     }
 
     /**
      * Primary constructor.
-     * @param url Info at {@link Http#url}.
+     * @param url See {@link Http#rawUrl}.
+     * @param connection See {@link Http#connection}.
      */
-    public Http(final URL url) {
-        this.url = url;
+    public Http(final String url, final ConnectionType connection) {
+        this.rawUrl = url;
+        this.connection = connection;
     }
 
     @Override
     public MethodType get() {
         return new Method(
-            this.map("GET", "get()")
+            new MethodInfo(
+                this.url(),
+                "GET"
+            ),
+            this.connection
         );
     }
 
     @Override
     public MethodType head() {
         return new Method(
-            this.map("HEAD", "head()")
+            new MethodInfo(
+                this.url(),
+                "HEAD"
+            ),
+            this.connection
         );
     }
 
     @Override
     public MethodType post() {
         return new Method(
-            this.map("POST", "post()")
+            new MethodInfo(
+                this.url(),
+                "POST"
+            ),
+            this.connection
         );
     }
 
     @Override
     public MethodType put() {
         return new Method(
-            this.map("PUT", "put()")
+            new MethodInfo(
+                this.url(),
+                "PUT"
+            ),
+            this.connection
         );
     }
 
     @Override
     public MethodType delete() {
         return new Method(
-            this.map("DELETE", "delete()")
+            new MethodInfo(
+                this.url(),
+                "DELETE"
+            ),
+            this.connection
         );
     }
 
     @Override
     public MethodType connect() {
         return new Method(
-            this.map("CONNECT", "connect()")
+            new MethodInfo(
+                this.url(),
+                "CONNECT"
+            ),
+            this.connection
         );
     }
 
     @Override
     public MethodType options() {
         return new Method(
-            this.map("OPTIONS", "options()")
+            new MethodInfo(
+                this.url(),
+                "OPTIONS"
+            ),
+            this.connection
         );
     }
 
     @Override
     public MethodType trace() {
         return new Method(
-            this.map("TRACE", "trace()")
+            new MethodInfo(
+                this.url(),
+                "TRACE"
+            ),
+            this.connection
         );
     }
 
     @Override
     public MethodType patch() {
         return new Method(
-            this.map("PATCH", "path()")
+            new MethodInfo(
+                this.url(),
+                "PATCH"
+            ),
+            this.connection
         );
     }
 
     /**
-     * Create a map that contains HTTP configuration.
-     * This method is created to remove duplicated code.
-     * @param method HTTP method name.
-     * @param callerMethod The method name of caller.
-     * @return Map that contains HTTP configuration.
+     * Instantiating the {@link URL} object may throw the {@link MalformedURLException}.
+     * It is tedious to handle the checked exception.
+     * That's why we created this method to avoid the code duplication.
+     * @return URL object from the {@link java.net} package.
+     * @throws IllegalStateException This can be thrown if the url is malformed.
      */
-    private TraceableMap map(final String method, final String callerMethod) {
-        return new TraceableMap()
-            .pair("host", this.url.getHost())
-            .pair("path", this.url.getPath().replaceFirst("^$", "/"))
-            .pair("protocol", this.url.getProtocol().toUpperCase(Locale.US))
-            .pair("method", method.toUpperCase(Locale.US))
-            .footprint(
-                this,
-                callerMethod,
-                new StringJoiner("\n\t")
-                    .add("Insert following pairs:")
-                    .add("host: " + this.url.getHost())
-                    .add("path: " + this.url.getPath())
-                    .add("protocol: " + this.url.getProtocol().toUpperCase(Locale.US))
-                    .add("method: " + method.toUpperCase(Locale.US))
-                    .toString()
-            );
+    private URL url() {
+        try {
+            return new URL(this.rawUrl);
+        } catch (final MalformedURLException ex) {
+            throw new IllegalStateException("Invalid URL: " + this.rawUrl, ex);
+        }
     }
 
 }

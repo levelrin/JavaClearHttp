@@ -7,13 +7,12 @@
 
 package com.levelrin.javaclearhttp.http;
 
+import com.levelrin.javaclearhttp.connection.IgnoredConnection;
+import com.levelrin.javaclearhttp.method.Method;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.StringJoiner;
 
 /**
  * Tests.
@@ -21,164 +20,110 @@ import java.util.StringJoiner;
 final class HttpTest {
 
     @Test
-    public void selectGet() throws MalformedURLException {
+    public void getMethodShouldReturnMethod() {
         MatcherAssert.assertThat(
             new Http(
-                new URL("https://www.levelrin1.com")
-            ).get().toString(),
-            CoreMatchers.equalTo(
-                this.expectedString(
-                    "www.levelrin1.com",
-                    "/",
-                    "GET"
-                )
-            )
+                "https://www.levelrin.com/get",
+                new IgnoredConnection()
+            ).get(),
+            CoreMatchers.instanceOf(Method.class)
         );
     }
 
     @Test
-    public void selectHead() {
-        final String url = "https://www.levelrin2.com/";
+    public void headMethodShouldReturnMethod() {
         MatcherAssert.assertThat(
-            new Http(url).head().toString(),
-            CoreMatchers.equalTo(
-                this.expectedString(
-                    "www.levelrin2.com",
-                    "/",
-                    "HEAD"
-                )
-            )
+            new Http(
+                "https://www.levelrin.com/head",
+                new IgnoredConnection()
+            ).head(),
+            CoreMatchers.instanceOf(Method.class)
         );
     }
 
     @Test
-    public void selectPost() {
-        final String url = "https://www.levelrin3.com/test3";
+    public void postMethodShouldReturnMethod() {
         MatcherAssert.assertThat(
-            new Http(url).post().toString(),
-            CoreMatchers.equalTo(
-                this.expectedString(
-                    "www.levelrin3.com",
-                    "/test3",
-                    "POST"
-                )
-            )
+            new Http(
+                "https://www.levelrin.com/post",
+                new IgnoredConnection()
+            ).post(),
+            CoreMatchers.instanceOf(Method.class)
         );
     }
 
     @Test
-    public void selectPut() {
-        final String url = "https://www.levelrin4.com/test4";
+    public void putMethodShouldReturnMethod() {
         MatcherAssert.assertThat(
-            new Http(url).put().toString(),
-            CoreMatchers.equalTo(
-                this.expectedString(
-                    "www.levelrin4.com",
-                    "/test4",
-                    "PUT"
-                )
-            )
+            new Http(
+                "https://www.levelrin.com/put",
+                new IgnoredConnection()
+            ).put(),
+            CoreMatchers.instanceOf(Method.class)
         );
     }
 
     @Test
-    public void selectDelete() {
-        final String url = "https://www.levelrin5.com/test5";
+    public void deleteMethodShouldReturnMethod() {
         MatcherAssert.assertThat(
-            new Http(url).delete().toString(),
-            CoreMatchers.equalTo(
-                this.expectedString(
-                    "www.levelrin5.com",
-                    "/test5",
-                    "DELETE"
-                )
-            )
+            new Http(
+                "https://www.levelrin.com/delete",
+                new IgnoredConnection()
+            ).delete(),
+            CoreMatchers.instanceOf(Method.class)
         );
     }
 
     @Test
-    public void selectConnect() {
-        final String url = "https://www.levelrin6.com/test6";
+    public void connectMethodShouldReturnMethod() {
         MatcherAssert.assertThat(
-            new Http(url).connect().toString(),
-            CoreMatchers.equalTo(
-                this.expectedString(
-                    "www.levelrin6.com",
-                    "/test6",
-                    "CONNECT"
-                )
-            )
+            new Http(
+                "https://www.levelrin.com/connect",
+                new IgnoredConnection()
+            ).connect(),
+            CoreMatchers.instanceOf(Method.class)
         );
     }
 
     @Test
-    public void selectOptions() {
-        final String url = "https://www.levelrin7.com/test7";
+    public void optionsMethodShouldReturnMethod() {
         MatcherAssert.assertThat(
-            new Http(url).options().toString(),
-            CoreMatchers.equalTo(
-                this.expectedString(
-                    "www.levelrin7.com",
-                    "/test7",
-                    "OPTIONS"
-                )
-            )
+            new Http(
+                "https://www.levelrin.com/options",
+                new IgnoredConnection()
+            ).options(),
+            CoreMatchers.instanceOf(Method.class)
         );
     }
 
     @Test
-    public void selectTrace() {
-        final String url = "https://www.levelrin8.com/test8";
+    public void traceMethodShouldReturnMethod() {
         MatcherAssert.assertThat(
-            new Http(url).trace().toString(),
-            CoreMatchers.equalTo(
-                this.expectedString(
-                    "www.levelrin8.com",
-                    "/test8",
-                    "TRACE"
-                )
-            )
+            new Http(
+                "https://www.levelrin.com/trace",
+                new IgnoredConnection()
+            ).trace(),
+            CoreMatchers.instanceOf(Method.class)
         );
     }
 
     @Test
-    public void selectPatch() {
-        final String url = "https://www.levelrin9.com/test9";
+    public void patchMethodShouldReturnMethod() {
         MatcherAssert.assertThat(
-            new Http(url).patch().toString(),
-            CoreMatchers.equalTo(
-                this.expectedString(
-                    "www.levelrin9.com",
-                    "/test9",
-                    "PATCH"
-                )
-            )
+            new Http(
+                "https://www.levelrin.com/patch",
+                new IgnoredConnection()
+            ).patch(),
+            CoreMatchers.instanceOf(Method.class)
         );
     }
 
     @Test
-    public void exceptionOnInvalidUrl() {
+    public void invalidUrlShouldThrowException() {
         Assertions.assertThrows(
-            IllegalArgumentException.class,
-            () -> new Http("www.levelrin10.com")
+            IllegalStateException.class,
+            () -> new Http("www.levelrin.com/invalid").get()
         );
-    }
-
-    /**
-     * It constructs expected String for tests.
-     * This method is created to reduce the duplicated code.
-     * @param host Host.
-     * @param path Path.
-     * @param method HTTP method.
-     * @return Expected output of the test case.
-     */
-    private String expectedString(final String host, final String path, final String method) {
-        return new StringJoiner("\n")
-            .add("Host: " + host)
-            .add("Path: " + path)
-            .add("Protocol: " + "HTTPS")
-            .add("Method: " + method)
-            .toString();
     }
 
 }

@@ -10,10 +10,9 @@ package com.levelrin.javaclearhttp.record.response;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,59 +21,72 @@ import java.util.Map;
 final class ResponseRecordTest {
 
     @Test
-    public void checkHeaders() {
-        final ResponseRecordType responseRecord = new ResponseRecord(this.rawReplies());
-        final Map<String, String> expectedHeaders = new HashMap<>();
-        expectedHeaders.put("Server", "GitHub.com");
-        expectedHeaders.put("Cache-Control", "public, max-age=60, s-maxage=60");
-        expectedHeaders.put("Vary", "Accept");
+    public void statusMethodShouldReturnStatus() {
         MatcherAssert.assertThat(
-            responseRecord.headers(),
-            CoreMatchers.equalTo(expectedHeaders)
+            new ResponseRecord(
+                Collections.singletonList("")
+            ).status(),
+            CoreMatchers.instanceOf(Status.class)
         );
     }
 
     @Test
-    public void checkBody() {
-        final ResponseRecordType responseRecord = new ResponseRecord(this.rawReplies());
+    public void headersShouldComeFromReplies() {
+        final Map<String, String> expected = new HashMap<>();
+        expected.put("Date", "Fri, 08 Nov 2019 15:37:41 GMT");
+        expected.put("Content-Type", "application/json; charset=utf-8");
         MatcherAssert.assertThat(
-            responseRecord.body(),
+            new ResponseRecord(
+                Arrays.asList(
+                    "HTTP/1.1 200 OK",
+                    "Date: Fri, 08 Nov 2019 15:37:41 GMT",
+                    "Content-Type: application/json; charset=utf-8",
+                    "",
+                    "content"
+                )
+            ).headers(),
+            CoreMatchers.equalTo(expected)
+        );
+    }
+
+    @Test
+    public void bodyShouldComeFromReplies() {
+        MatcherAssert.assertThat(
+            new ResponseRecord(
+                Arrays.asList(
+                    "HTTP/1.1 201 Created",
+                    "Content-Type: application/json",
+                    "",
+                    "content"
+                )
+            ).body(),
             CoreMatchers.equalTo("content")
         );
     }
 
     @Test
-    public void checkAllReplies() {
-        final ResponseRecordType responseRecord = new ResponseRecord(this.rawReplies());
+    public void repliesShouldBeSameAsRawReplies() {
         MatcherAssert.assertThat(
-            responseRecord.replies(),
-            CoreMatchers.equalTo(this.rawReplies())
-        );
-    }
-
-    @Test
-    public void checkStatus() {
-        final ResponseRecordType responseRecord = new ResponseRecord(this.rawReplies());
-        MatcherAssert.assertThat(
-            responseRecord.status().toString(),
+            new ResponseRecord(
+                Collections.singletonList("one")
+            ).replies(),
             CoreMatchers.equalTo(
-                "HTTP/1.1 200 OK"
+                Collections.singletonList("one")
             )
         );
     }
 
-    /**
-     * Dummy replies.
-     * @return List that contains dummy replies.
-     */
-    private List<String> rawReplies() {
-        return Arrays.asList(
-            "HTTP/1.1 200 OK",
-            "Server: GitHub.com",
-            "Cache-Control: public, max-age=60, s-maxage=60",
-            "Vary: Accept",
-            "",
-            "content"
+    @Test
+    public void toStringShouldBeStringifiedReplies() {
+        MatcherAssert.assertThat(
+            new ResponseRecord(
+                Arrays.asList(
+                    "one",
+                    "two",
+                    "three"
+                )
+            ).toString(),
+            CoreMatchers.equalTo("one\ntwo\nthree\n")
         );
     }
 

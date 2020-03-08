@@ -6,7 +6,7 @@
  */
 
 /**
- * This package is not related to the domain of the project.
- * Usually, classes in this package were created to remove duplicated code.
+ * This package contains classes related to HTTP connection.
+ * Classes in this package is responsible for actual sending request and receiving response.
  */
-package com.levelrin.javaclearhttp.internal;
+package com.levelrin.javaclearhttp.connection;

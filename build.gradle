@@ -9,7 +9,7 @@ plugins {
 }
 
 group 'com.levelrin'
-version '0.1.0'
+version '0.1.1'
 
 sourceCompatibility = 1.8
 
@@ -59,7 +59,7 @@ jacocoTestCoverageVerification {
                 enabled = true
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.90000
+                minimum = 0.89000
             }
             limit {
                 enabled = true

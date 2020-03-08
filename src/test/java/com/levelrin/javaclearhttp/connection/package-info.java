@@ -8,4 +8,4 @@
 /**
  * Tests.
  */
-package com.levelrin.javaclearhttp.internal.connection;
+package com.levelrin.javaclearhttp.connection;

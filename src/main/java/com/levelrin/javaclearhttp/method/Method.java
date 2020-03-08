@@ -7,18 +7,15 @@
 
 package com.levelrin.javaclearhttp.method;
 
+import com.levelrin.javaclearhttp.body.Body;
+import com.levelrin.javaclearhttp.body.BodyType;
+import com.levelrin.javaclearhttp.connection.ConnectionType;
 import com.levelrin.javaclearhttp.header.Header;
 import com.levelrin.javaclearhttp.header.HeaderType;
-import com.levelrin.javaclearhttp.internal.connection.ConnectionType;
-import com.levelrin.javaclearhttp.internal.Messages;
-import com.levelrin.javaclearhttp.record.Record;
+import com.levelrin.javaclearhttp.info.BodyInfo;
+import com.levelrin.javaclearhttp.info.HeaderInfo;
+import com.levelrin.javaclearhttp.info.ReqInfoType;
 import com.levelrin.javaclearhttp.record.RecordType;
-import com.levelrin.javaclearhttp.internal.TraceableMap;
-import com.levelrin.javaclearhttp.internal.connection.SocketConnection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
 
 /**
  * Represents HTTP method.
@@ -28,10 +25,9 @@ import java.util.StringJoiner;
 public final class Method implements MethodType {
 
     /**
-     * A map to store HTTP request configuration.
-     * It should already have the following: host, path, protocol, and method.
+     * Request information.
      */
-    private final TraceableMap map;
+    private final ReqInfoType info;
 
     /**
      * An object that is responsible for making HTTP connection.
@@ -39,57 +35,38 @@ public final class Method implements MethodType {
     private final ConnectionType connection;
 
     /**
-     * Secondary constructor.
-     * This object will use {@link SocketConnection}.
-     * @param map Info at {@link Method#map}.
-     */
-    public Method(final TraceableMap map) {
-        this(map, new SocketConnection(map));
-    }
-
-    /**
      * Primary constructor.
-     * Usually, it's for testing.
-     * @param map Info at {@link Method#map}.
-     * @param connection Info at {@link Method#connection}.
+     * @param info See {@link Method#info}.
+     * @param connection See {@link Method#connection}.
      */
-    public Method(final TraceableMap map, final ConnectionType connection) {
-        this.map = map;
+    public Method(final ReqInfoType info, final ConnectionType connection) {
+        this.info = info;
         this.connection = connection;
     }
 
     @Override
     public HeaderType header(final String name, final String value) {
-        final Map<String, String> header = new HashMap<>();
-        header.put(name, value);
         return new Header(
-            this.map.footprint(
-                this,
-                "header(String, String)",
-                "Set header. Name: " + name + " Value: " + value
+            new HeaderInfo(
+                this.info,
+                name,
+                value
             ),
-            header
+            this.connection
+        );
+    }
+
+    @Override
+    public BodyType body(final String content) {
+        return new Body(
+            new BodyInfo(this.info, content),
+            this.connection
         );
     }
 
     @Override
     public RecordType send() {
-        final List<String> messages = new Messages(this.map).list();
-        return new Record(
-            this.map.footprint(this, "send()", "Pass map to Record object."),
-            messages,
-            this.connection.replies(messages)
-        );
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner("\n")
-            .add("Host: " + this.map.value("host"))
-            .add("Path: " + this.map.value("path"))
-            .add("Protocol: " + this.map.value("protocol"))
-            .add("Method: " + this.map.value("method"))
-            .toString();
+        return this.connection.record(this.info);
     }
 
 }

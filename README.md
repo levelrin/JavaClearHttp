@@ -30,11 +30,11 @@ System.out.println(record);
 
 Output:
 <pre>
+URL: https://api.github.com/users/octocat/orgs
 Host: api.github.com
-Path: /users/octocat/orgs
+Method: GET
 Protocol: HTTPS
 Port: 443
-Method: GET
 
 Messages:
 GET /users/octocat/orgs HTTP/1.1
@@ -46,20 +46,20 @@ Connection: close
 
 Replies:
 HTTP/1.1 200 OK
-Date: Fri, 08 Nov 2019 15:37:41 GMT
+Date: Sun, 08 Mar 2020 17:30:12 GMT
 Content-Type: application/json; charset=utf-8
 Content-Length: 2
 Connection: close
 Server: GitHub.com
 Status: 200 OK
 X-RateLimit-Limit: 60
-X-RateLimit-Remaining: 58
-X-RateLimit-Reset: 1573231061
+X-RateLimit-Remaining: 59
+X-RateLimit-Reset: 1583692212
 Cache-Control: public, max-age=60, s-maxage=60
 Vary: Accept
 ETag: "98f0c1b396a4e5d54f4d5fe561d54b44"
 X-GitHub-Media-Type: github.v3; format=json
-Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type
+Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset
 Access-Control-Allow-Origin: *
 Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
 X-Frame-Options: deny
@@ -67,10 +67,13 @@ X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
 Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
 Content-Security-Policy: default-src 'none'
-Vary: Accept-Encoding
-X-GitHub-Request-Id: 0503:74A2:13760E:19F8DB:5DC58BC5
+Vary: Accept-Encoding, Accept, X-Requested-With
+X-GitHub-Request-Id: 0500:0877:80D903:A2C8BB:5E652BA4
 
 []
+BUILD SUCCESSFUL in 8s
+4 actionable tasks: 3 executed, 1 up-to-date
+2:30:12: Tasks execution finished ':cleanTest :test --tests "com.levelrin.javaclearhttp.http.HttpTest.test"'.
 
 </pre>
 
@@ -78,9 +81,9 @@ X-GitHub-Request-Id: 0503:74A2:13760E:19F8DB:5DC58BC5
 
 ```java
 final String content = "{\"title\": \"Found a bug\",\"body\": \"I am having a problem with this.\"}";
-final RecordType record = new Http("https://api.github.com/repos/levelrin/demo/issues")
+final RecordType record = new Http("https://api.github.com/repos/levelrin/javaclearhttp/issues")
     .post()
-    .header("Authorization", "Basic credentials")
+    .header("Authorization", "token access_token")
     .header("Content-Type", "application/json")
     .body(content)
     .send();
@@ -89,44 +92,43 @@ System.out.println(record);
 
 Output:
 <pre>
+URL: https://api.github.com/repos/levelrin/javaclearhttp/issues
 Host: api.github.com
-Path: /repos/levelrin/demo/issues
+Method: POST
 Protocol: HTTPS
 Port: 443
-Method: POST
-Body: {"title": "Found a bug","body": "I am having a problem with this."}
 
 Messages:
-POST /repos/levelrin/demo/issues HTTP/1.1
-Authorization: Basic credentials
-Content-Type: application/json
-Host: api.github.com
-User-Agent: JavaClearHttp
+POST /repos/levelrin/javaclearhttp/issues HTTP/1.1
+Authorization: token access_token
 Accept: */*
-Content-Length: 67
+User-Agent: JavaClearHttp
 Connection: close
+Host: api.github.com
+Content-Length: 67
+Content-Type: application/json
 
 {"title": "Found a bug","body": "I am having a problem with this."}
 
 Replies:
 HTTP/1.1 201 Created
-Date: Fri, 08 Nov 2019 15:43:07 GMT
+Date: Sun, 08 Mar 2020 18:52:40 GMT
 Content-Type: application/json; charset=utf-8
-Content-Length: 1692
+Content-Length: 1746
 Connection: close
 Server: GitHub.com
 Status: 201 Created
 X-RateLimit-Limit: 5000
-X-RateLimit-Remaining: 4999
-X-RateLimit-Reset: 1573231387
+X-RateLimit-Remaining: 4995
+X-RateLimit-Reset: 1583693785
 Cache-Control: private, max-age=60, s-maxage=60
 Vary: Accept, Authorization, Cookie, X-GitHub-OTP
-ETag: "425cbcdbe9e270b5af46324dff2e6bd8"
+ETag: "06cf509d046f315929650076f5227a4a"
 X-OAuth-Scopes: admin:enterprise, admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook, delete:packages, delete_repo, gist, notifications, read:packages, repo, user, workflow, write:discussion, write:packages
 X-Accepted-OAuth-Scopes: 
-Location: https://api.github.com/repos/levelrin/Demo/issues/8
+Location: https://api.github.com/repos/levelrin/JavaClearHttp/issues/8
 X-GitHub-Media-Type: github.v3; format=json
-Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type
+Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset
 Access-Control-Allow-Origin: *
 Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
 X-Frame-Options: deny
@@ -134,11 +136,10 @@ X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
 Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
 Content-Security-Policy: default-src 'none'
-Vary: Accept-Encoding
-X-GitHub-Request-Id: 0506:1D4E:1202DFD:16D53A7:5DC58D0A
+Vary: Accept-Encoding, Accept, X-Requested-With
+X-GitHub-Request-Id: 0502:0877:81F2E6:A41FDD:5E653EF8
 
-{"url":"https://api.github.com/repos/levelrin/Demo/issues/8","repository_url":"https://api.github.com/repos/levelrin/Demo","labels_url":"https://api.github.com/repos/levelrin/Demo/issues/8/labels{/name}","comments_url":"https://api.github.com/repos/levelrin/Demo/issues/8/comments","events_url":"https://api.github.com/repos/levelrin/Demo/issues/8/events","html_url":"https://github.com/levelrin/Demo/issues/8","id":520084924,"node_id":"MDU6SXNzdWU1MjAwODQ5MjQ=","number":8,"title":"Found a bug","user":{"login":"levelrin","id":51286045,"node_id":"MDQ6VXNlcjUxMjg2MDQ1","avatar_url":"https://avatars0.githubusercontent.com/u/51286045?v=4","gravatar_id":"","url":"https://api.github.com/users/levelrin","html_url":"https://github.com/levelrin","followers_url":"https://api.github.com/users/levelrin/followers","following_url":"https://api.github.com/users/levelrin/following{/other_user}","gists_url":"https://api.github.com/users/levelrin/gists{/gist_id}","starred_url":"https://api.github.com/users/levelrin/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/levelrin/subscriptions","organizations_url":"https://api.github.com/users/levelrin/orgs","repos_url":"https://api.github.com/users/levelrin/repos","events_url":"https://api.github.com/users/levelrin/events{/privacy}","received_events_url":"https://api.github.com/users/levelrin/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"assignees":[],"milestone":null,"comments":0,"created_at":"2019-11-08T15:43:07Z","updated_at":"2019-11-08T15:43:07Z","closed_at":null,"author_association":"OWNER","body":"I am having a problem with this.","closed_by":null}
-
+{"url":"https://api.github.com/repos/levelrin/JavaClearHttp/issues/8","repository_url":"https://api.github.com/repos/levelrin/JavaClearHttp","labels_url":"https://api.github.com/repos/levelrin/JavaClearHttp/issues/8/labels{/name}","comments_url":"https://api.github.com/repos/levelrin/JavaClearHttp/issues/8/comments","events_url":"https://api.github.com/repos/levelrin/JavaClearHttp/issues/8/events","html_url":"https://github.com/levelrin/JavaClearHttp/issues/8","id":577546740,"node_id":"MDU6SXNzdWU1Nzc1NDY3NDA=","number":8,"title":"Found a bug","user":{"login":"levelrin","id":51286045,"node_id":"MDQ6VXNlcjUxMjg2MDQ1","avatar_url":"https://avatars0.githubusercontent.com/u/51286045?v=4","gravatar_id":"","url":"https://api.github.com/users/levelrin","html_url":"https://github.com/levelrin","followers_url":"https://api.github.com/users/levelrin/followers","following_url":"https://api.github.com/users/levelrin/following{/other_user}","gists_url":"https://api.github.com/users/levelrin/gists{/gist_id}","starred_url":"https://api.github.com/users/levelrin/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/levelrin/subscriptions","organizations_url":"https://api.github.com/users/levelrin/orgs","repos_url":"https://api.github.com/users/levelrin/repos","events_url":"https://api.github.com/users/levelrin/events{/privacy}","received_events_url":"https://api.github.com/users/levelrin/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"assignees":[],"milestone":null,"comments":0,"created_at":"2020-03-08T18:52:40Z","updated_at":"2020-03-08T18:52:40Z","closed_at":null,"author_association":"OWNER","body":"I am having a problem with this.","closed_by":null}
 </pre>
 
 ## How to use?
@@ -148,7 +149,7 @@ You just need to add the dependency like so:
 Gradle:
 ```groovy
 dependencies {
-    implementation 'com.levelrin:javaclearhttp:0.1.0'
+    implementation 'com.levelrin:javaclearhttp:0.1.1'
 }
 ```
 
@@ -157,7 +158,7 @@ Maven:
 <dependency>
   <groupId>com.levelrin</groupId>
   <artifactId>javaclearhttp</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 

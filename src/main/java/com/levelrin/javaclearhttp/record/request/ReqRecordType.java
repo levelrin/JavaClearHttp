@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * The record of HTTP request.
  */
-public interface RequestRecordType {
+public interface ReqRecordType {
 
     /**
      * The record of HTTP headers.

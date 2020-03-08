@@ -5,9 +5,8 @@
  * See the details at https://github.com/levelrin/JavaClearHttp/blob/master/LICENSE
  */
 
-package com.levelrin.javaclearhttp.body;
+package com.levelrin.javaclearhttp.connection;
 
-import com.levelrin.javaclearhttp.connection.LeakedConnection;
 import com.levelrin.javaclearhttp.info.IgnoredInfo;
 import com.levelrin.javaclearhttp.record.IgnoredRecord;
 import org.hamcrest.CoreMatchers;
@@ -17,17 +16,16 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests.
  */
-final class BodyTest {
+final class LeakedConnectionTest {
 
     @Test
-    public void sendShouldReturnRecordFromConnection() {
+    public void shouldReturnInjectedRecord() {
         MatcherAssert.assertThat(
-            new Body(
-                new IgnoredInfo(),
-                new LeakedConnection(
-                    new IgnoredRecord()
-                )
-            ).send(),
+            new LeakedConnection(
+                new IgnoredRecord()
+            ).record(
+                new IgnoredInfo()
+            ),
             CoreMatchers.instanceOf(IgnoredRecord.class)
         );
     }

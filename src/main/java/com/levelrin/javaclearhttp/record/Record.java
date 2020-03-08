@@ -7,13 +7,11 @@
 
 package com.levelrin.javaclearhttp.record;
 
-import com.levelrin.javaclearhttp.internal.Port;
-import com.levelrin.javaclearhttp.internal.TraceableMap;
 import com.levelrin.javaclearhttp.record.request.RequestRecord;
-import com.levelrin.javaclearhttp.record.request.RequestRecordType;
+import com.levelrin.javaclearhttp.info.ReqInfoType;
+import com.levelrin.javaclearhttp.record.request.ReqRecordType;
+import com.levelrin.javaclearhttp.record.response.ResRecordType;
 import com.levelrin.javaclearhttp.record.response.ResponseRecord;
-import com.levelrin.javaclearhttp.record.response.ResponseRecordType;
-
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -24,64 +22,42 @@ import java.util.StringJoiner;
 public final class Record implements RecordType {
 
     /**
-     * A map that contains HTTP request configuration.
-     * It should have host, path, protocol, and method.
-     * Also, it may have body.
+     * The request information.
      */
-    private final TraceableMap map;
+    private final ReqInfoType info;
 
     /**
-     * A list that contains the messages sent to the server.
-     */
-    private final List<String> messages;
-
-    /**
-     * A list that contains the replies sent from the server.
+     * Raw HTTP response messages.
      */
     private final List<String> replies;
 
     /**
-     * Primary constructor.
-     * @param map Info at {@link Record#map}.
-     * @param messages Info at {@link Record#messages}.
-     * @param replies Info at {@link Record#replies}.
+     * Constructor.
+     * @param info See {@link Record#info}.
+     * @param replies See {@link Record#replies}.
      */
-    public Record(final TraceableMap map, final List<String> messages, final List<String> replies) {
-        this.map = map;
-        this.messages = messages;
+    public Record(final ReqInfoType info, final List<String> replies) {
+        this.info = info;
         this.replies = replies;
     }
 
     @Override
-    public RequestRecordType request() {
-        return new RequestRecord(
-            this.map.footprint(
-                this, "request()", "Create RequestRecordType object."
-            ),
-            this.messages
-        );
+    public ReqRecordType request() {
+        return new RequestRecord(this.info);
     }
 
     @Override
-    public ResponseRecordType response() {
+    public ResRecordType response() {
         return new ResponseRecord(this.replies);
     }
 
     @Override
     public String toString() {
         final StringJoiner description = new StringJoiner("\n")
-            .add("Host: " + this.map.value("host"))
-            .add("Path: " + this.map.value("path"))
-            .add("Protocol: " + this.map.value("protocol"))
-            .add("Port: " + new Port(this.map.value("protocol")))
-            .add("Method: " + this.map.value("method"));
-        if (this.map.contains("body")) {
-            description.add("Body: " + this.map.value("body"));
-        }
-        description.add("\nMessages:")
-            .add(new RequestRecord(this.map, this.messages).toString())
-            .add("Replies:")
-            .add(new ResponseRecord(this.replies).toString());
+            .add(this.info.toString())
+            .add("")
+            .add("Replies:");
+        this.replies.forEach(description::add);
         return description.toString();
     }
 
