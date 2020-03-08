@@ -7,15 +7,15 @@
 
 package com.levelrin.javaclearhttp.record.request;
 
-import com.levelrin.javaclearhttp.internal.TraceableMap;
+import com.levelrin.javaclearhttp.info.LeakedHeadersInfo;
+import com.levelrin.javaclearhttp.info.LeakedMessagesInfo;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,62 +24,63 @@ import java.util.Map;
 final class RequestRecordTest {
 
     @Test
-    public void checkHeaders() {
-        final RequestRecordType record = new RequestRecord(
-            new TraceableMap(),
-            Arrays.asList(
-                "GET / HTTP/1.1",
-                "Host: www.levelrin.com",
-                "User-Agent: JavaClearHttp",
-                "Accept: */*",
-                "",
-                "content1"
-            )
-        );
-        final Map<String, String> expectedHeaders = new HashMap<>();
-        expectedHeaders.put("Host", "www.levelrin.com");
-        expectedHeaders.put("User-Agent", "JavaClearHttp");
-        expectedHeaders.put("Accept", "*/*");
+    public void headersShouldComeFromInfo() {
+        final Map<String, String> headers = new HashMap<>();
         MatcherAssert.assertThat(
-            record.headers(),
-            CoreMatchers.equalTo(expectedHeaders)
+            new RequestRecord(
+                new LeakedHeadersInfo(headers)
+            ).headers(),
+            CoreMatchers.sameInstance(headers)
         );
     }
 
     @Test
-    public void checkBody() {
-        final RequestRecordType record = new RequestRecord(
-            new TraceableMap()
-                .pair("host", "www.levelrin.com")
-                .pair("path", "/")
-                .pair("protocol", "HTTPS")
-                .pair("method", "POST")
-                .pair("body", "content2"),
-            new ArrayList<>()
-        );
+    public void bodyShouldComeFromMessages() {
         MatcherAssert.assertThat(
-            record.body(),
-            CoreMatchers.equalTo("content2")
+            new RequestRecord(
+                new LeakedMessagesInfo(
+                    Arrays.asList(
+                        "POST /repos/levelrin/demo/issues HTTP/1.1",
+                        "Authorization: Basic credentials",
+                        "Content-Type: application/json",
+                        "Host: api.github.com",
+                        "User-Agent: JavaClearHttp",
+                        "Accept: */*",
+                        "Content-Length: 67",
+                        "Connection: close",
+                        "",
+                        "content"
+                    )
+                )
+            ).body(),
+            CoreMatchers.equalTo("content")
         );
     }
 
     @Test
-    public void checkMessages() {
-        final List<String> messages = Arrays.asList(
-            "GET / HTTP/1.1",
-            "Host: www.levelrin.com",
-            "User-Agent: JavaClearHttp",
-            "Accept: */*",
-            "",
-            "content3"
-        );
-        final RequestRecordType record = new RequestRecord(
-            new TraceableMap(),
-            messages
-        );
+    public void messagesShouldComeFromInfo() {
+        final List<String> messages = new ArrayList<>();
         MatcherAssert.assertThat(
-            record.messages(),
-            CoreMatchers.equalTo(messages)
+            new RequestRecord(
+                new LeakedMessagesInfo(messages)
+            ).messages(),
+            CoreMatchers.sameInstance(messages)
+        );
+    }
+
+    @Test
+    public void toStringShouldReturnStringifiedMessages() {
+        MatcherAssert.assertThat(
+            new RequestRecord(
+                new LeakedMessagesInfo(
+                    Arrays.asList(
+                        "one",
+                        "two",
+                        "three"
+                    )
+                )
+            ).toString(),
+            CoreMatchers.equalTo("one\ntwo\nthree\n")
         );
     }
 

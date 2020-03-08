@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * The record of HTTP response.
  */
-public interface ResponseRecordType {
+public interface ResRecordType {
 
     /**
      * Return HTTP status object.

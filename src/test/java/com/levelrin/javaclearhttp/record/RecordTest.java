@@ -7,13 +7,15 @@
 
 package com.levelrin.javaclearhttp.record;
 
-import com.levelrin.javaclearhttp.internal.TraceableMap;
+import com.levelrin.javaclearhttp.info.IgnoredInfo;
+import com.levelrin.javaclearhttp.info.LeakedStringInfo;
+import com.levelrin.javaclearhttp.record.request.RequestRecord;
+import com.levelrin.javaclearhttp.record.response.ResponseRecord;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Tests.
@@ -21,119 +23,36 @@ import java.util.Arrays;
 final class RecordTest {
 
     @Test
-    public void toStringWithoutBody() {
-        final RecordType record = new Record(
-            new TraceableMap()
-                .pair("host", "www.levelrin.com")
-                .pair("path", "/")
-                .pair("protocol", "HTTP")
-                .pair("method", "GET"),
-            Arrays.asList(
-                "GET / HTTP/1.1",
-                "Host: www.levelrin.com",
-                "User-Agent: JavaClearHttp",
-                "Accept: */*",
-                "Connection: close",
-                "",
-                "content"
-            ),
-            Arrays.asList(
-                "GET / HTTP/1.1",
-                "Status: 200 OK",
-                "",
-                "content"
-            )
-        );
+    public void requestShouldReturnRequestRecord() {
         MatcherAssert.assertThat(
-            record.toString(),
-            CoreMatchers.equalTo(
-                "Host: www.levelrin.com\n"
-                    + "Path: /\n"
-                    + "Protocol: HTTP\n"
-                    + "Port: 80\n"
-                    + "Method: GET\n"
-                    + "\n"
-                    + "Messages:\n"
-                    + "GET / HTTP/1.1\n"
-                    + "Host: www.levelrin.com\n"
-                    + "User-Agent: JavaClearHttp\n"
-                    + "Accept: */*\n"
-                    + "Connection: close\n"
-                    + "\n"
-                    + "content\n"
-                    + "\n"
-                    + "Replies:\n"
-                    + "GET / HTTP/1.1\n"
-                    + "Status: 200 OK\n"
-                    + "\n"
-                    + "content\n"
-            )
+            new Record(
+                new IgnoredInfo(),
+                new ArrayList<>()
+            ).request(),
+            CoreMatchers.instanceOf(RequestRecord.class)
         );
     }
 
     @Test
-    public void toStringWithBody() {
-        final RecordType record = new Record(
-            new TraceableMap()
-                .pair("host", "www.levelrin1.com")
-                .pair("path", "/test1")
-                .pair("protocol", "HTTPS")
-                .pair("method", "POST")
-                .pair("body", "content"),
-            new ArrayList<>(),
-            new ArrayList<>()
-        );
+    public void responseShouldReturnResponseRecord() {
         MatcherAssert.assertThat(
-            record.toString(),
-            CoreMatchers.equalTo(
-                "Host: www.levelrin1.com\n"
-                    + "Path: /test1\n"
-                    + "Protocol: HTTPS\n"
-                    + "Port: 443\n"
-                    + "Method: POST\n"
-                    + "Body: content"
-                    + "\n\n"
-                    + "Messages:\n"
-                    + "\n"
-                    + "Replies:\n"
-            )
+            new Record(
+                new IgnoredInfo(),
+                new ArrayList<>()
+            ).response(),
+            CoreMatchers.instanceOf(ResponseRecord.class)
         );
     }
 
     @Test
-    public void createRequestRecord() {
-        final RecordType record = new Record(
-            new TraceableMap(),
-            Arrays.asList(
-                "One",
-                "Two",
-                "Three"
-            ),
-            new ArrayList<>()
-        );
+    public void toStringShouldHaveRequestAndResponseInfo() {
         MatcherAssert.assertThat(
-            record.request().toString(),
+            new Record(
+                new LeakedStringInfo("Request"),
+                Collections.singletonList("Response")
+            ).toString(),
             CoreMatchers.equalTo(
-                "One\nTwo\nThree\n"
-            )
-        );
-    }
-
-    @Test
-    public void createResponseRecord() {
-        final RecordType record = new Record(
-            new TraceableMap(),
-            new ArrayList<>(),
-            Arrays.asList(
-                "Uno",
-                "Dos",
-                "Tres"
-            )
-        );
-        MatcherAssert.assertThat(
-            record.response().toString(),
-            CoreMatchers.equalTo(
-                "Uno\nDos\nTres\n"
+                "Request\n\nReplies:\nResponse"
             )
         );
     }

@@ -7,11 +7,15 @@
 
 package com.levelrin.javaclearhttp.method;
 
-import com.levelrin.javaclearhttp.internal.TraceableMap;
+import com.levelrin.javaclearhttp.body.Body;
+import com.levelrin.javaclearhttp.connection.IgnoredConnection;
+import com.levelrin.javaclearhttp.connection.LeakedConnection;
+import com.levelrin.javaclearhttp.header.Header;
+import com.levelrin.javaclearhttp.info.IgnoredInfo;
+import com.levelrin.javaclearhttp.record.IgnoredRecord;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
 
 /**
  * Tests.
@@ -19,55 +23,38 @@ import java.util.Arrays;
 final class MethodTest {
 
     @Test
-    public void defineHeaders() {
-        final MethodType method = new Method(
-            new TraceableMap()
-                .pair("host", "www.levelrin.com")
-                .pair("path", "/")
-                .pair("protocol", "HTTP")
-                .pair("method", "GET")
-        );
+    public void headerMethodShouldReturnHeader() {
         MatcherAssert.assertThat(
-            method
-                .header("Authentication", "Bearer token")
-                .header("Accept", "*/*")
-                .toString(),
-            CoreMatchers.equalTo(
-                "Host: www.levelrin.com\n"
-                    + "Path: /\n"
-                    + "Protocol: HTTP\n"
-                    + "Method: GET\n"
-                    + "\nHeaders:\n"
-                    + "Accept: */*\n"
-                    + "Authentication: Bearer token"
-            )
+            new Method(
+                new IgnoredInfo(),
+                new IgnoredConnection()
+            ).header("name1", "value1"),
+            CoreMatchers.instanceOf(Header.class)
         );
     }
 
     @Test
-    public void checkIfMessagesAreCorrectlyConstructed() {
-        new Method(
-            new TraceableMap()
-                .pair("host", "www.levelrin.com")
-                .pair("path", "/")
-                .pair("protocol", "HTTP")
-                .pair("method", "GET"),
-            messages -> {
-                MatcherAssert.assertThat(
-                    messages,
-                    CoreMatchers.equalTo(
-                        Arrays.asList(
-                            "GET / HTTP/1.1",
-                            "Host: www.levelrin.com",
-                            "User-Agent: JavaClearHttp",
-                            "Accept: */*",
-                            "Connection: close",
-                            ""
-                        )
-                    )
-                );
-                return Arrays.asList("Apple", "Banana");
-            }
-        ).send();
+    public void bodyMethodShouldReturnBody() {
+        MatcherAssert.assertThat(
+            new Method(
+                new IgnoredInfo(),
+                new IgnoredConnection()
+            ).body("content"),
+            CoreMatchers.instanceOf(Body.class)
+        );
     }
+
+    @Test
+    public void sendShouldReturnRecordFromConnection() {
+        MatcherAssert.assertThat(
+            new Method(
+                new IgnoredInfo(),
+                new LeakedConnection(
+                    new IgnoredRecord()
+                )
+            ).send(),
+            CoreMatchers.instanceOf(IgnoredRecord.class)
+        );
+    }
+
 }

@@ -5,11 +5,12 @@
  * See the details at https://github.com/levelrin/JavaClearHttp/blob/master/LICENSE
  */
 
-package com.levelrin.javaclearhttp.internal.connection;
+package com.levelrin.javaclearhttp.connection;
 
-import com.levelrin.javaclearhttp.internal.Port;
-import com.levelrin.javaclearhttp.internal.TraceableMap;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import com.levelrin.javaclearhttp.info.ReqInfoType;
+import com.levelrin.javaclearhttp.record.Record;
+import com.levelrin.javaclearhttp.record.RecordType;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +19,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -28,30 +28,15 @@ import java.util.stream.Collectors;
  */
 public final class HttpsSocket implements ConnectionType {
 
-    /**
-     * A map to store HTTP request configuration.
-     * It should already have the following: host, protocol, and method.
-     * Optionally, it may contain body as well.
-     */
-    private final TraceableMap map;
-
-    /**
-     * Primary constructor.
-     * @param map Info at {@link HttpsSocket#map}.
-     */
-    public HttpsSocket(final TraceableMap map) {
-        this.map = map;
-    }
-
     @Override
     @SuppressFBWarnings(value = "RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE", justification = "False-positive.")
-    public List<String> replies(final List<String> messages) {
+    public RecordType record(final ReqInfoType info) {
         try (
             Socket socket = SSLSocketFactory
                 .getDefault()
                 .createSocket(
-                    this.map.value("host"),
-                    new Port(this.map.value("protocol")).toInt()
+                    info.host(),
+                    info.port()
                 );
             PrintWriter writer = new PrintWriter(
                 new OutputStreamWriter(
@@ -67,11 +52,14 @@ public final class HttpsSocket implements ConnectionType {
                 )
             )
         ) {
-            messages.forEach(writer::println);
-            return reader.lines().collect(Collectors.toList());
+            info.messages().forEach(writer::println);
+            return new Record(
+                info,
+                reader.lines().collect(Collectors.toList())
+            );
         } catch (final IOException ex) {
             throw new IllegalStateException(
-                new ConnectionError(this.map, messages).toString(),
+                info.toString(),
                 ex
             );
         }

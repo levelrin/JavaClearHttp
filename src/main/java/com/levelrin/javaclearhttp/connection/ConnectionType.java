@@ -5,9 +5,10 @@
  * See the details at https://github.com/levelrin/JavaClearHttp/blob/master/LICENSE
  */
 
-package com.levelrin.javaclearhttp.internal.connection;
+package com.levelrin.javaclearhttp.connection;
 
-import java.util.List;
+import com.levelrin.javaclearhttp.info.ReqInfoType;
+import com.levelrin.javaclearhttp.record.RecordType;
 
 /**
  * It's responsible for making HTTP connection.
@@ -17,9 +18,9 @@ public interface ConnectionType {
 
     /**
      * Make HTTP connection, send the messages, then return replies.
-     * @param messages It will be sent to the server.
+     * @param info It will provide the request messages.
      * @return Replies from the server.
      */
-    List<String> replies(List<String> messages);
+    RecordType record(ReqInfoType info);
 
 }

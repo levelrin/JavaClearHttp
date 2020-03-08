@@ -7,28 +7,27 @@
 
 package com.levelrin.javaclearhttp.record.response;
 
-import com.levelrin.javaclearhttp.internal.Headers;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * The record of HTTP response.
  */
-public final class ResponseRecord implements ResponseRecordType {
+public final class ResponseRecord implements ResRecordType {
 
     /**
-     * A list that contains the replies from the server.
+     * Raw HTTP response messages.
      */
     private final List<String> rawReplies;
 
     /**
-     * Primary constructor.
-     * @param replies Info at {@link ResponseRecord#rawReplies}.
+     * Constructor.
+     * @param rawReplies See {@link ResponseRecord#rawReplies}.
      */
-    public ResponseRecord(final List<String> replies) {
-        this.rawReplies = replies;
+    public ResponseRecord(final List<String> rawReplies) {
+        this.rawReplies = rawReplies;
     }
 
     @Override
@@ -38,7 +37,16 @@ public final class ResponseRecord implements ResponseRecordType {
 
     @Override
     public Map<String, String> headers() {
-        return new Headers(this.rawReplies).map();
+        final List<String> copy = new ArrayList<>(this.rawReplies);
+        final Map<String, String> headers = new HashMap<>();
+        for (int index = 1; index < copy.size(); index = index + 1) {
+            if (copy.get(index).isEmpty()) {
+                break;
+            }
+            final String[] pair = copy.get(index).split(": ", 2);
+            headers.put(pair[0], pair[1]);
+        }
+        return headers;
     }
 
     @Override

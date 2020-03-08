@@ -6,7 +6,7 @@
  */
 
 /**
- * This package contains classes related to HTTP connection.
- * Classes in this package is responsible for actual sending request and receiving response.
+ * This package contains the request information.
+ * See {@link com.levelrin.javaclearhttp.info.ReqInfoType}.
  */
-package com.levelrin.javaclearhttp.internal.connection;
+package com.levelrin.javaclearhttp.info;
