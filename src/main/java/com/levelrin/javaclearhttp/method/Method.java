@@ -59,7 +59,14 @@ public final class Method implements MethodType {
     @Override
     public BodyType body(final String content) {
         return new Body(
-            new BodyInfo(this.info, content),
+            new BodyInfo(
+                new HeaderInfo(
+                    this.info,
+                    "Content-Length",
+                    Integer.toString(content.length())
+                ),
+                content
+            ),
             this.connection
         );
     }
