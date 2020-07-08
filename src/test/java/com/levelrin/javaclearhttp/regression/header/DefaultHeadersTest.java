@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Checking the default headers.
  */
-public final class DefaultHeadersTest {
+final class DefaultHeadersTest {
 
     @Test
     public void requestHeadersShouldHaveContentLengthAsDefaultWhenBodyExists() {
