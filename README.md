@@ -71,9 +71,6 @@ Vary: Accept-Encoding, Accept, X-Requested-With
 X-GitHub-Request-Id: 0500:0877:80D903:A2C8BB:5E652BA4
 
 []
-BUILD SUCCESSFUL in 8s
-4 actionable tasks: 3 executed, 1 up-to-date
-2:30:12: Tasks execution finished ':cleanTest :test --tests "com.levelrin.javaclearhttp.http.HttpTest.test"'.
 
 </pre>
 
